@@ -1,0 +1,81 @@
+## 리눅스 패키지 업데이트 및 업그레이드
+
+% sudo apt update
+...
+
+% sudo apt upgrade
+...
+
+% whoami
+ubuntu
+
+## 사용자 추가 및 sudo 그룹에 추가
+
+% sudo adduser charlie
+
+Adding user `charlie' ...
+Adding new group `charlie' (1001) ...
+Adding new user `charlie' (1001) with group `charlie' ...
+Creating home directory `/home/charlie' ...
+Copying files from `/etc/skel' ...
+New password: 
+Retype new password: 
+passwd: password updated successfully
+Changing the user information for charlie
+Enter the new value, or press ENTER for the default
+        Full Name []: 
+        Room Number []: 
+        Work Phone []: 
+        Home Phone []: 
+        Other []: 
+Is the information correct? [Y/n] Y
+
+% id charlie
+uid=1001(charlie) gid=1001(charlie) groups=1001(charlie)
+
+% sudo usermod -aG sudo charlie
+uid=1001(charlie) gid=1001(charlie) groups=1001(charlie),27(sudo)
+
+
+## 추가한 사용자를 Key Pair로 로그인 가능하게 만들기
+
+% su charlie
+Password: 
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+% sudo ls /home/ubuntu/.ssh
+authorized_keys
+
+% cd /home/charlie
+
+% mkdir .ssh
+
+% cd .ssh
+
+% sudo cp /home/ubuntu/.ssh/authorized_keys ./
+
+% sudo nano /etc/ssh/sshd_config
+...
+PubkeyAuthentication yes
+...
+
+% sudo systemctl restart sshd
+
+% exit
+exit
+% logout
+
+-------------------------------------------------------------------------------
+## 로컬에서 새로 추가한 사용자 이름으로 로그인 하기
+% eval `ssh-agent -s`
+Agent pid 3395
+
+% ssh-add id_rsa_linux_server_setup.pem
+Identity added: id_rsa_linux_server_setup.pem (id_rsa_linux_server_setup.pem)
+
+% ssh -i id_rsa_linux_server_setup.pem charlie@13.125.74.32
+... 일반적인 경우에서 접속이 되어야 하는데 AWS에서는 접속이 되지 않음...
+... 다른 설정이 되어 있는 것으로 추측(예: 최초 사용자인 ubuntu로만 접속가능?)
+-------------------------------------------------------------------------------
+

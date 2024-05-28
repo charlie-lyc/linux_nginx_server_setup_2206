@@ -1,0 +1,56 @@
+## SSH Keys 생성: public and private keys.
+
+- 일반적인 경우
+% ls ~/.ssh
+...
+
+% ssh-keygen -t rsa
+
+Generating public/private rsa key pair.
+Enter file in which to save the key (/Users/charlie/.ssh/id_rsa): /Users/charlie/.ssh/id_rsa_aws_ec2_test
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again: 
+Your identification has been saved in /Users/charlie/.ssh/id_rsa_aws_ec2_test
+Your public key has been saved in /Users/charlie/.ssh/id_rsa_aws_ec2_test.pub
+The key fingerprint is:
+SHA256:Zlen0UWvNK2RNDqD+27kvshe/8ovWZIQpA8tkBjE2do charlie@YoungCheols-MacBook-Pro.local
+The key's randomart image is:
++---[RSA 3072]----+
+|     oo=.. .. o.o|
+|      + o. +.+ =.|
+|       o  = B.B o|
+|      . E  *.B = |
+|        S o o.o. |
+|       o . .. o .|
+|           oo  + |
+|         . +ooo  |
+|         .+o+.+=o|
++----[SHA256]-----+
+
+% ls ~/.ssh
+... id_rsa_aws_ec2_test   id_rsa_aws_ec2_test.pub   known_hosts ...
+
+% cat ~/.ssh/id_rsa_aws_ec2_test.pub
+
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDeDt2YToHPwdMcpQlAyQfVGQNnWK
+jKPWbGskjrBVJlye0pyntzZ+tKZpPNgTkVqTyrDMaUBRmvrTWnKHnteRFpb7R3VS1t
+refxtrJ3u9GjDaHIKhzXA8ssmpQ1OCRK0PVCCJ29tthx6smOKaCU2uRdfXj6UfVMx+
+jPzvWsXL2Bfk2RNdpleIyiZO3v5N5FnH6AoM9Erl/aP11cxiPvuAt6Hhr5lkA33HuL
+SN5LMxb0PIrHlS8+AkcVUssunWYIX483GLCOyScHazP5ogTu9A+7mxL2dDG8jVQiT7
+dMPk8Gkx2fyaPyrOg9GOFlARoGgYds33PoIg1AFIQGz3s7FWfxQi8SHbgCoC1tsG0Y
+3wj0CS5sB7ABRod1+2LN1ZcT8ukOr5DxH4LTwYcJv6TjrXaFDinA8JD6tOIUKgYJMT
+1U6UP+9vBvpXeS+jz02B2oLNW/hCfWsCHWBTWjsu/L3JVV6ozKTHoFCtaDPhUVS4CJ
+aknAWfpuTLxgXbdAEdkp2e0= charlie@YoungCheols-MacBook-Pro.local
+
+
+### 만약 SSH Key를 추가하는 기능이 클라우스 플랫폼 서비스에서 제공 된다면 위의 public key를 복사해 추가하면 됨
+### 하지만 요즘 대부분의 경우에는 클라우드 인스턴스 생성시 Key Pair 생성이 지원됨
+
+- AWS EC2의 경우에는 서비스에서 Key Pair 생성 후 아래의 작업을 추가 실행
+
+## Move your key.
+% mv ~/Downloads/id_rsa_linux_server_setup.pem ./
+...
+
+## Ensure your key is not publicly viewable.
+% chmod 400 id_rsa_linux_server_setup.pem
