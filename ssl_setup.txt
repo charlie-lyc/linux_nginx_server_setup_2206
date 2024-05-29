@@ -71,8 +71,14 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 ## 또는 https://www.testApp.com 으로 접속 가능
 ------------------------------------------------------------------
 
-## Only valid for 90 days, test the renewal process with
+## Verify certbot automatic renewal
+% sudo systemctl status certbot.timer
+
+## Test the renewal process
 % sudo certbot renew --dry-run
+
+## Or, renew manually if you can remember before passing 90 days
+% sudo certbot renew
 
 
 ## 위의 방법은 가급적 개발 또는 테스트 목적으로만 사용하길 바라며,
