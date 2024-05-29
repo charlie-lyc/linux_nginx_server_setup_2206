@@ -113,3 +113,65 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 ## 위의 방법은 가급적 개발 또는 테스트 목적으로만 사용하길 바라며,
 ## 실제 서비스의 경우에는 클라우드 플랫폼에서 제공되는 자동 갱신 설정을 이용하는 것이 안전함  
+
+------------------------------------------------------------------------------------------------------
+## Automatic restarting NginX
+
+% sudo nano /lib/systemd/system/nginx.service
+
+# Stop dance for nginx
+# =======================
+#
+# ExecStop sends SIGSTOP (graceful stop) to the nginx process.
+# If, after 5s (--retry QUIT/5) nginx is still running, systemd takes control
+# and sends SIGTERM (fast shutdown) to the main process.
+# After another 5s (TimeoutStopSec=5), and if nginx is alive, systemd sends
+# SIGKILL to all the remaining processes in the process group (KillMode=mixed).
+#
+# nginx signals reference doc:
+# http://nginx.org/en/docs/control.html
+#
+[Unit]
+Description=A high performance web server and a reverse proxy server
+Documentation=man:nginx(8)
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/run/nginx.pid
+ExecStartPre=/usr/sbin/nginx -t -q -g 'daemon on; master_process on;'
+ExecStart=/usr/sbin/nginx -g 'daemon on; master_process on;'
+ExecReload=/usr/sbin/nginx -g 'daemon on; master_process on;' -s reload
+ExecStop=-/sbin/start-stop-daemon --quiet --stop --retry QUIT/5 --pidfile /run/nginx.pid
+TimeoutStopSec=5
+KillMode=mixed
+
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
+
+% sudo systemctl daemon-reload
+
+% sudo systemctl enable nginx
+Synchronizing state of nginx.service with SysV service script with /lib/systemd/systemd-sysv-install.
+Executing: /lib/systemd/systemd-sysv-install enable nginx
+
+% sudo systemctl status nginx
+● nginx.service - A high performance web server and a reverse proxy server
+     Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+     Active: active (running) since Wed 2024-05-29 18:27:52 KST; 1h 43min ago
+       Docs: man:nginx(8)
+   Main PID: 766761 (nginx)
+      Tasks: 2 (limit: 2209)
+     Memory: 3.5M
+     CGroup: /system.slice/nginx.service
+             ├─766761 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+             └─768347 nginx: worker process
+
+May 29 18:27:52 dev-frontend systemd[1]: Starting A high performance web server and a reverse proxy server...
+May 29 18:27:52 dev-frontend systemd[1]: Started A high performance web server and a reverse proxy server.
+
+
+
