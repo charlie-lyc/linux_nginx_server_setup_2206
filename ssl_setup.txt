@@ -7,10 +7,11 @@
 % sudo apt install certbot python3-certbot-nginx
 
 % sudo service nginx stop
-...
 
 % sudo certbot certonly --standalone -d seawater-ems.site -d www.seawater-ems.site
 ...
+
+% sudo service nginx restart
 
 % sudo nano /etc/nginx/sites-available/default
 
