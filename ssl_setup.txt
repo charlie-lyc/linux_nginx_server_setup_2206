@@ -61,8 +61,6 @@ server {
         }
 }
 
-
-
 ## Only valid for 90 days, test the renewal process with
 % sudo certbot renew --dry-run
 
