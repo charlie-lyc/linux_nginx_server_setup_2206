@@ -20,7 +20,7 @@ Rule added (v6)
 
 
 ## NginX 설치 및 설정 그리고 테스트
-% sudo apt install NginX
+% sudo apt install nginx
 ...
 
 % sudo nano /etc/nginx/sites-available/default
