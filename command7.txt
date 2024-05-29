@@ -25,7 +25,7 @@ Rule added (v6)
 
 % sudo nano /etc/nginx/sites-available/default
 
-(1) #listen [::]:80 default_server;
+(1) # listen [::]:80 default_server;
 (2) server_name testApp.com www.testApp.com;
 (3) location / {
         proxy_pass http://localhost:3001;
