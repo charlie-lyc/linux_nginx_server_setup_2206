@@ -8,7 +8,7 @@
 
 % sudo service nginx stop
 
-% sudo certbot certonly --standalone -d seawater-ems.site -d www.seawater-ems.site
+% sudo certbot --nginx -d seawater-ems.site -d www.seawater-ems.site
 ...
 
 % sudo service nginx restart
@@ -60,6 +60,16 @@ server {
                 proxy_pass https://localhost:5001;
         }
 }
+
+% sudo nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+
+% sudo nginx -s reload
+------------------------------------------------------------------
+## 이제 브라우저에서 https://testApp.com 
+## 또는 https://www.testApp.com 으로 접속 가능
+------------------------------------------------------------------
 
 ## Only valid for 90 days, test the renewal process with
 % sudo certbot renew --dry-run
