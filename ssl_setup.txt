@@ -49,8 +49,10 @@ IMPORTANT NOTES:
 
    Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
    Donating to EFF:                    https://eff.org/donate-le
+
 -----------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------
+
 ## 또는 이렇게 수동으로 실행할 수도 있음
 % sudo service nginx stop
 
