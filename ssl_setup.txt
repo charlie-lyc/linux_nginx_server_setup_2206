@@ -6,7 +6,7 @@
 
 % sudo apt install certbot python3-certbot-nginx
 
-% sudo certbot --nginx -d seawater-ems.site -d www.seawater-ems.site
+% sudo certbot --nginx -d testApp.com -d www.testApp.com
 ... Certbot 에 의한 완전 자동화 ...
 
 -----------------------------------------------------------------------------------------------------
