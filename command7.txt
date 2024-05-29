@@ -34,6 +34,7 @@ Rule added (v6)
         proxy_set_header Hosst $host;
         proxy_cache_bypass $http_upgrade;
     }
+[3] #listen [::]:80 default_server;
 
 # Default server configuration
 #
