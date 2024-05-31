@@ -27,7 +27,7 @@
 # Nginx 다시 로드
 % sudo systemctl reload nginx
 
-------------------------------------------
+--------------------------------------------
 
 # 부팅 시 자동 재시작으로 설정
 % sudo systemctl enable nginx
@@ -40,10 +40,23 @@ Executing: /lib/systemd/systemd-sysv-install enable nginx
 # 부팅 시 Nginx 자동 시작 해제
 % sudo systemctl disable nginx
 
-------------------------------------------
+--------------------------------------------
 
 *** 참고로 Database Server 일 경우도 비슷 ***
-% sudo systemctl enable mysql(d)
+% sudo systemctl enable mysql(또는 mysqld)
 Synchronizing state of mysql.service with SysV service script with /lib/systemd/systemd-sysv-install.
 Executing: /lib/systemd/systemd-sysv-install enable mysql
 
+% sudo systemctl status mysql
+● mysql.service - MySQL Community Server
+     Loaded: loaded (/lib/systemd/system/mysql.service; enabled; vendor preset: enabled)
+     Active: active (running) since Thu 2024-05-09 13:10:31 KST; 3 weeks 1 days ago
+   Main PID: 826 (mysqld)
+     Status: "Server is operational"
+      Tasks: 46 (limit: 2228)
+     Memory: 483.5M
+     CGroup: /system.slice/mysql.service
+             └─826 /usr/sbin/mysqld
+
+May 09 13:10:25 dev-mysql-8-0 systemd[1]: Starting MySQL Community Server...
+May 09 13:10:31 dev-mysql-8-0 systemd[1]: Started MySQL Community Server.
