@@ -13,7 +13,7 @@
 # 다시 로드
 % sudo nginx -s reload
 
---------------------------------------
+------------------------------------------
 
 # Nginx 시작 및 systemctl에 등록
 % sudo systemctl start nginx
@@ -27,7 +27,7 @@
 # Nginx 다시 로드
 % sudo systemctl reload nginx
 
---------------------------------------
+------------------------------------------
 
 # 부팅 시 자동 재시작으로 설정
 % sudo systemctl enable nginx
@@ -37,3 +37,11 @@
 
 # 부팅 시 Nginx 자동 시작 해제
 % sudo systemctl disable nginx
+
+------------------------------------------
+
+*** 참고로 Database Server 일 경우도 비슷 ***
+% sudo systemctl enable mysql(d)
+Synchronizing state of mysql.service with SysV service script with /lib/systemd/systemd-sysv-install.
+Executing: /lib/systemd/systemd-sysv-install enable mysql
+
