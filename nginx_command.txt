@@ -1,0 +1,39 @@
+# 시작
+% sudo nginx
+
+# 빠른 종료
+% sudo nginx -s stop
+
+# 정상 종료
+% sudo nginx -s quit 
+
+# 재시작
+% sudo nginx -s restart
+
+# 다시 로드
+% sudo nginx -s reload
+
+--------------------------------------
+
+# Nginx 시작 및 systemctl에 등록
+% sudo systemctl start nginx
+
+#Nginx 중지
+% sudo systemctl stop nginx
+
+# Nginx 재시작
+% sudo systemctl restart nginx
+
+# Nginx 다시 로드
+% sudo systemctl reload nginx
+
+--------------------------------------
+
+# 부팅 시 자동 재시작으로 설정
+% sudo systemctl enable nginx
+
+# 현재 상태 확인
+% sudo systemctl status nginx
+
+# 부팅 시 Nginx 자동 시작 해제
+% sudo systemctl disable nginx
