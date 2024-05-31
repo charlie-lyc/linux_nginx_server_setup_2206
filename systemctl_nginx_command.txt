@@ -31,6 +31,8 @@
 
 # 부팅 시 자동 재시작으로 설정
 % sudo systemctl enable nginx
+Synchronizing state of nginx.service with SysV service script with /lib/systemd/systemd-sysv-install.
+Executing: /lib/systemd/systemd-sysv-install enable nginx
 
 # 현재 상태 확인
 % sudo systemctl status nginx
