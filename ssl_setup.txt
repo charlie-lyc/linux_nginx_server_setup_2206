@@ -5,6 +5,7 @@
 % sudo apt upgrade
 
 % sudo apt install certbot python3-certbot-nginx
+-> 운영체제에 따라서 python3-certbot-nginx 대신 certbot-nginx를 설치해야 하는 경우도 있음
 
 % sudo certbot --nginx -d testApp.com -d www.testApp.com
 
