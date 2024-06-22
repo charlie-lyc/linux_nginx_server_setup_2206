@@ -8,7 +8,7 @@
 
 % sudo certbot --nginx -d testApp.com -d www.testApp.com
 
-... Certbot 에 의한 완전 자동화 ...
+... Certbot 에 의한 인증부터 리디렉팅(/etc/nginx/nginx.conf 편집)까지 완전 자동화 ...
 Saving debug log to /var/log/letsencrypt/letsencrypt.log
 Plugins selected: Authenticator nginx, Installer nginx
 Cert not yet due for renewal
