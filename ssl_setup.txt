@@ -10,6 +10,7 @@
 % sudo certbot --nginx -d testApp.com -d www.testApp.com
 
 ... Certbot 에 의한 인증, 포트(443) 개방, 리디렉팅(/etc/nginx/nginx.conf 편집)까지 완전 자동화 ...
+
 Saving debug log to /var/log/letsencrypt/letsencrypt.log
 Plugins selected: Authenticator nginx, Installer nginx
 Cert not yet due for renewal
@@ -121,10 +122,11 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
+## 수동으로 인증서 갱신
+
 # Test the renewal process
 % sudo certbot renew --dry-run
 
-# 수동으로 인증서 갱신
 # Renew manually if you can remember before passing 90 days
 % sudo service nginx stop
 % sudo certbot renew
@@ -134,7 +136,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 % sudo certbot certificates
 
 ------------------------------------------------------------------------------------------------------
-# 자동으로 인증서 갱신
+## 자동으로 인증서 갱신
 ## Renew automatically
 
 # Verify certbot automatic renewal
