@@ -5,10 +5,9 @@
 % sudo apt upgrade
 
 % sudo apt install certbot python3-certbot-nginx
--> 운영체제에 따라서 python3-certbot-nginx 대신 certbot-nginx를 설치해야 하는 경우도 있음
+-> 운영체제에 따라서 python3-certbot-nginx 대신 (python-)certbot-nginx를 설치해야 할 수도 있음
 
 % sudo certbot --nginx -d testApp.com -d www.testApp.com
-
 ... Certbot 에 의한 인증, 포트(443) 개방, 리디렉팅(/etc/nginx/nginx.conf 편집)까지 완전 자동화 ...
 
 Saving debug log to /var/log/letsencrypt/letsencrypt.log
@@ -55,11 +54,8 @@ IMPORTANT NOTES:
 -----------------------------------------------------------------------------------------------------
 
 ## 또는 이렇게 수동으로 실행하는 방법도 있음
-% sudo service nginx stop
 
 % sudo certbot certonly --standalone -d testApp.com -d www.testApp.com
-
-% sudo service nginx restart
 
 % sudo nano /etc/nginx/sites-available/default
 
@@ -136,23 +132,8 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 % sudo certbot certificates
 
 ------------------------------------------------------------------------------------------------------
-## 자동으로 인증서 갱신
+# 자동으로 인증서 갱신 : 두가지 실행 중 어느것이 맞는지 1일, 15일 확인이 필요...
 ## Renew automatically
-
-# 크론탭 편집 모드로 자동갱신 스케줄 입력 : 매달 1일 자정에 갱신 시도, 갱신 후 nginx 재시작
-$ sudo crontab -e
-0 0 1 * * sudo certbot renew --renew-hook="sudo systemctl restart nginx"
-:wq
-
-# 크론탭 보기
-$ sudo crontab -l
-
-# 크론 다시 시작
-sudo service cron restart
-
-------------------------------------------------------------------------------------------------------
-# 자동으로 인증서 갱신하는 다른 방법(검증 필요)
-## OR another renew automatically
 
 % sudo nano /etc/crontab
 
@@ -175,14 +156,39 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 25 6    * * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.daily )
 47 6    * * 7   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.weekly )
 52 6    1 * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
-#
-15 3    1 * *   root    cert renew --quiet --renew-hook "/etc/init.d/nginx reload"
-
+# first day of every month
+0  0    1 * *   root    certbot renew --quiet --renew-hook="systemctl restart nginx" 
+0  0    15 * *  root    certbot renew --quiet --renew-hook="nginx -s reload"
 
 ## 위의 방법은 가급적 개발 또는 테스트 목적으로만 사용하길 바라며,
 ## 실제 서비스의 경우에는 클라우드 플랫폼에서 제공되는 자동 갱신 설정을 이용하는 것이 안전함  
 
-## Automatic restarting NginX
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+## Restarting NginX automatically
+
+% sudo systemctl enable nginx
+Synchronizing state of nginx.service with SysV service script with /lib/systemd/systemd-sysv-install.
+Executing: /lib/systemd/systemd-sysv-install enable nginx
+
+% sudo systemctl status nginx
+● nginx.service - A high performance web server and a reverse proxy server
+     Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+     Active: active (running) since Wed 2024-05-29 18:27:52 KST; 1h 43min ago
+       Docs: man:nginx(8)
+   Main PID: 766761 (nginx)
+      Tasks: 2 (limit: 2209)
+     Memory: 3.5M
+     CGroup: /system.slice/nginx.service
+             ├─766761 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+             └─768347 nginx: worker process
+
+May 29 18:27:52 dev-frontend systemd[1]: Starting A high performance web server and a reverse proxy server...
+May 29 18:27:52 dev-frontend systemd[1]: Started A high performance web server and a reverse proxy server.
+
+------------------------------------------------------------------------------------------------------
+## Or another restarting NginX automatically
+
 % sudo nano /lib/systemd/system/nginx.service
 
 # Stop dance for nginx
@@ -219,25 +225,6 @@ RestartSec=5s
 WantedBy=multi-user.target
 
 % sudo systemctl daemon-reload
-
-% sudo systemctl enable nginx
-Synchronizing state of nginx.service with SysV service script with /lib/systemd/systemd-sysv-install.
-Executing: /lib/systemd/systemd-sysv-install enable nginx
-
-% sudo systemctl status nginx
-● nginx.service - A high performance web server and a reverse proxy server
-     Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
-     Active: active (running) since Wed 2024-05-29 18:27:52 KST; 1h 43min ago
-       Docs: man:nginx(8)
-   Main PID: 766761 (nginx)
-      Tasks: 2 (limit: 2209)
-     Memory: 3.5M
-     CGroup: /system.slice/nginx.service
-             ├─766761 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
-             └─768347 nginx: worker process
-
-May 29 18:27:52 dev-frontend systemd[1]: Starting A high performance web server and a reverse proxy server...
-May 29 18:27:52 dev-frontend systemd[1]: Started A high performance web server and a reverse proxy server.
 
 -------------------------------------------------------------------------------------------------------------
 ## 서버의 포트가 어떻게 사용되고 있는지 확인
