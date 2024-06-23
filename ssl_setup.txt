@@ -122,21 +122,39 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 ## 또는 https://www.testApp.com 으로 접속 가능
 ------------------------------------------------------------------
 
-## Verify certbot automatic renewal
-% sudo systemctl status certbot.timer
-
-## Veryfy certificate information(ex: expiry date)
-% sudo certbot certificates
-
-## Test the renewal process
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+# Test the renewal process
 % sudo certbot renew --dry-run
 
-## Renew manually if you can remember before passing 90 days
+# Renew manually if you can remember before passing 90 days
 % sudo service nginx stop
 % sudo certbot renew
 % sudo service nginx restart
 
+# Veryfy certificate information(ex: expiry date)
+% sudo certbot certificates
+
+------------------------------------------------------------------------------------------------------
 ## Renew automatically
+
+# Verify certbot automatic renewal
+% sudo systemctl status certbot.timer
+
+# 크론탭 편집 모드로 자동갱신 스케줄 입력 : 매달 1일 자정에 갱신 시도, 갱신 후 nginx 재시작
+$ sudo crontab -e
+0 0 1 * * sudo certbot renew --renew-hook="sudo systemctl restart nginx"
+:wq
+
+# 크론탭 보기
+$ sudo crontab -l
+
+# 크론 다시 시작
+sudo service cron restart
+
+------------------------------------------------------------------------------------------------------
+## Another Renew automatically
+
 % sudo nano /etc/crontab
 
 # /etc/crontab: system-wide crontab
@@ -165,9 +183,6 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 ## 위의 방법은 가급적 개발 또는 테스트 목적으로만 사용하길 바라며,
 ## 실제 서비스의 경우에는 클라우드 플랫폼에서 제공되는 자동 갱신 설정을 이용하는 것이 안전함  
 
-------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------
 ## Automatic restarting NginX
 
 % sudo nano /lib/systemd/system/nginx.service
