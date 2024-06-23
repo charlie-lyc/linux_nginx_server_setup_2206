@@ -230,6 +230,7 @@ WantedBy=multi-user.target
 ## 서버의 포트가 어떻게 사용되고 있는지 확인
 
 % sudo netstat -lnpt
+(% sudo ss -lnpt)
 tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      22640/nginx: master
 tcp        0      0 0.0.0.0:8080            0.0.0.0:*               LISTEN      2017/node /home/sea
 tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      555/systemd-resolve
