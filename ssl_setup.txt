@@ -139,9 +139,6 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 ## 자동으로 인증서 갱신
 ## Renew automatically
 
-# Verify certbot automatic renewal
-% sudo systemctl status certbot.timer
-
 # 크론탭 편집 모드로 자동갱신 스케줄 입력 : 매달 1일 자정에 갱신 시도, 갱신 후 nginx 재시작
 $ sudo crontab -e
 0 0 1 * * sudo certbot renew --renew-hook="sudo systemctl restart nginx"
@@ -179,14 +176,13 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 47 6    * * 7   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.weekly )
 52 6    1 * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
 #
-15 3    1 * *   root    renew --quiet --renew-hook "/etc/init.d/nginx reload"
+15 3    1 * *   root    cert renew --quiet --renew-hook "/etc/init.d/nginx reload"
 
 
 ## 위의 방법은 가급적 개발 또는 테스트 목적으로만 사용하길 바라며,
 ## 실제 서비스의 경우에는 클라우드 플랫폼에서 제공되는 자동 갱신 설정을 이용하는 것이 안전함  
 
 ## Automatic restarting NginX
-
 % sudo nano /lib/systemd/system/nginx.service
 
 # Stop dance for nginx
